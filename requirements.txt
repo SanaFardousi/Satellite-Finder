@@ -1,0 +1,6 @@
+streamlit==1.33
+requests==2.31.0
+geocoder==1.38.1
+streamlit-folium==0.8.0
+folium==0.14.0
+pandas==2.1.1
