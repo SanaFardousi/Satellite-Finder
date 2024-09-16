@@ -5,6 +5,7 @@ import geocoder
 from streamlit_folium import st_folium
 import folium
 import pandas as pd
+import plotly.express as px
 
 g = geocoder.ip('me')
 lat = g.latlng[0]
@@ -143,7 +144,10 @@ with st.form("main form",clear_on_submit=False, border=False):
         df = pd.DataFrame(satellites)
         df.rename(columns={'satlat':'lat', 'satlng':'lon'}, inplace=True)
         st.write(df)
-        st.map(df)
+        #st.map(df)
+
+        map = px.scatter_mapbox(df, lar = 'lat', lon = 'lon',hover_name = 'satname', hover_data = ['intDesignator', 'launchData', 'satalt', 'satid'])
+        st.plotly_chart(map)
 
                                     
                             
