@@ -146,7 +146,7 @@ with st.form("main form",clear_on_submit=False, border=False):
         st.write(df)
         #st.map(df)
 
-        map = px.scatter_mapbox(df, lat = 'lat', lon = 'lon',hover_name = 'satname', hover_data = ['intDesignator', 'launchData', 'satalt', 'satid'])
+        map = px.scatter_mapbox(df, lat = 'lat', lon = 'lon',hover_name = 'satname', hover_data = ['intDesignator', 'launchDate', 'satalt', 'satid'])
         st.plotly_chart(map)
 
                                     
