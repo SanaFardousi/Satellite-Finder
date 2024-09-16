@@ -123,7 +123,7 @@ with st.form("main form",clear_on_submit=False, border=False):
         ## Getting satellites information
         beginingOfURL = "https://api.n2yo.com/rest/v1/satellite//above/"
         middleOfURL = "/" + str(lat) + "/" + str(lng) + "/" + str(elevation) + "/" + str(degree) + "/" + str(category) + "/"
-        endOfURL = "&apiKey=" + st.secrets["key"]
+        endOfURL = "&apiKey="  + st.secrets["key"]
         finalURL = beginingOfURL + middleOfURL + endOfURL
         print(finalURL) 
         response = requests.get(finalURL)
@@ -137,17 +137,20 @@ with st.form("main form",clear_on_submit=False, border=False):
         jprint(response.json())
         text = json.dumps(response.json(), sort_keys=True, indent=4)
         print(type(text))
-        st.write(finalURL)
 
         data = json.loads(text)
         satellites = data['above']
         df = pd.DataFrame(satellites)
         df.rename(columns={'satlat':'lat', 'satlng':'lon'}, inplace=True)
-        st.write(df)
-        #st.map(df)
 
-        map = px.scatter_mapbox(df, lat = 'lat', lon = 'lon',hover_name = 'satname', hover_data = ['intDesignator', 'launchDate', 'satalt', 'satid'])
-        st.plotly_chart(map)
+        tab1, tab2 = st.tabs(['Map', 'Table'])
+
+        with tab1:
+            map = px.scatter_mapbox(df, lat = 'lat', lon = 'lon',hover_name = 'satname', hover_data = ['intDesignator', 'launchDate', 'satalt', 'satid'], zoom = 3, mapbox_style = 'open-street-map', height = 600)
+            st.plotly_chart(map)
+
+        with tab2:
+            st.write(df)
 
                                     
                             
