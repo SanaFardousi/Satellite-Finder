@@ -34,6 +34,10 @@ with st.form("main form",clear_on_submit=False, border=False):
             #setLocation = st.form_submit_button("Set Location")
 
             #if setLocation:
+            cities = pd.read_csv('worldcities.csv')
+            chooseCity = st.selectbox("Choose Your City", cities)
+            print(chooseCity)
+
             lat = latitude
             lng = longitude
             st.success(f"Stored Location: {lat}, {lng}")
@@ -123,7 +127,7 @@ with st.form("main form",clear_on_submit=False, border=False):
         ## Getting satellites information
         beginingOfURL = "https://api.n2yo.com/rest/v1/satellite//above/"
         middleOfURL = "/" + str(lat) + "/" + str(lng) + "/" + str(elevation) + "/" + str(degree) + "/" + str(category) + "/"
-        endOfURL = "&apiKey="  + st.secrets["key"]
+        endOfURL = "&apiKey=" + st.secrets["key"]  
         finalURL = beginingOfURL + middleOfURL + endOfURL
         print(finalURL) 
         response = requests.get(finalURL)
