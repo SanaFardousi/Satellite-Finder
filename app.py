@@ -36,8 +36,8 @@ with st.form("main form",clear_on_submit=False, border=False):
             #if setLocation:
             cities = pd.read_csv('worldcities.csv')
             chooseCity = st.selectbox("Choose Your City", cities)
-            st.write(chooseCity)
-            st.write(type(chooseCity))
+            st.write(chooseCity.lat)
+            st.write(chooseCity.lng)
 
             lat = latitude
             lng = longitude
