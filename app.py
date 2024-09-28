@@ -12,20 +12,21 @@ lat = g.latlng[0]
 lng = g.latlng[1]
 
 
-st.title("Satellite Finder")
-st.subheader("This webapp shows all the satallites orbiting the Earth above you!!")
-st.divider()
+st.title("Satellites in Sight: Track What's Above 🛰️")
+st.subheader("Discover the Satellites Orbiting Your Location", divider = 'blue')
+#st.divider()
 
 with st.form("main form",clear_on_submit=False, border=False):
     col1, col2 = st.columns(2)
 
     with col1:
-        st.write("Your current location")
+        st.write("Your current location 🌍")
         st.write("Latitude = " ,lat)
         st.write("Longitude = " ,lng)
+        
 
     with col2:
-        with st.expander("Or choose location manually"):
+        with st.expander("Or choose location manually 📍"):
             #with st.form("my_form", clear_on_submit=False, border=False):
 
             latitude = st.number_input("Enter Latitude", value=lat, placeholder="Type a number...", key=1, format="%f")
@@ -35,17 +36,32 @@ with st.form("main form",clear_on_submit=False, border=False):
 
             #if setLocation:
             cities = pd.read_csv('worldcities.csv')
-            chooseCity = st.selectbox("Choose Your City", cities)
-            st.write(chooseCity.lat)
-            st.write(chooseCity.lng)
+            city = st.selectbox("Choose Your City", cities, index = None, placeholder='Choose Your City..')
+            # st.write(chooseCity.lat)
+            # st.write(chooseCity.lng)
+            # print(type(chooseCity))
+            if city:
+                # Filter the DataFrame for the selected city
+                city_data = cities[cities['city'] == city].iloc[0]
+                latitude = city_data['lat']
+                longitude = city_data['lng']
+    
+                # Display the results
+                st.write(f"Selected City: {city}")
+                st.write(f"Latitude: {latitude}, Longitude: {longitude}")
 
             lat = latitude
             lng = longitude
-            st.success(f"Stored Location: {lat}, {lng}")
+        
+    st.success(f"Stored Location: {lat}, {lng}")
+    
+    #col3, col4 = st.columns([0.7,0.3])
 
+    #with col3:
+    degree = st.slider("Select the radius of the search? ", 0, 90, 45, help='0 shows the satellites orbiting right above you, 90 shows all satellite above the horizen.')
+    #with col4:
+    #st.image('degree.png',caption='The radius (θ), expressed in degrees, is measured relative to the point in the sky directly above an observer (azimuth). The search radius range is 0 to 90 degrees, nearly 0 meaning to show only satellites passing exactly above the observer location, while 90 degrees to return all satellites above the horizon.', width=300)
 
-    degree = st.slider("Select the degree of the look up?", 0, 90, 45)
-   
     categories = {
         'All': 0,
         'Brightest': 1,
@@ -128,7 +144,7 @@ with st.form("main form",clear_on_submit=False, border=False):
         ## Getting satellites information
         beginingOfURL = "https://api.n2yo.com/rest/v1/satellite//above/"
         middleOfURL = "/" + str(lat) + "/" + str(lng) + "/" + str(elevation) + "/" + str(degree) + "/" + str(category) + "/"
-        endOfURL = "&apiKey=" + st.secrets["key"]  
+        endOfURL = "&apiKey=" + st.secrets["key"]   
         finalURL = beginingOfURL + middleOfURL + endOfURL
         print(finalURL) 
         response = requests.get(finalURL)
@@ -151,11 +167,13 @@ with st.form("main form",clear_on_submit=False, border=False):
         tab1, tab2 = st.tabs(['Map', 'Table'])
 
         with tab1:
-            map = px.scatter_mapbox(df, lat = 'lat', lon = 'lon',hover_name = 'satname', hover_data = ['intDesignator', 'launchDate', 'satalt', 'satid'], zoom = 3, mapbox_style = 'open-street-map', height = 600)
+            map = px.scatter_mapbox(df, lat = 'lat', lon = 'lon', color = 'satname', hover_name = 'satname', hover_data = ['intDesignator', 'launchDate', 'satalt', 'satid'], color_discrete_sequence=px.colors.qualitative.Set1, zoom = 3, mapbox_style = 'open-street-map', height = 600)
             st.plotly_chart(map)
 
         with tab2:
             st.write(df)
 
+st.write('Rate us!')
+feedback = st.feedback('stars')
                                     
                             
