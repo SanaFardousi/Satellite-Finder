@@ -174,6 +174,6 @@ with st.form("main form",clear_on_submit=False, border=False):
             st.write(df)
 
 st.write('Rate us!')
-feedback = st.feedback('stars')
+fb = st.feedback('stars')
                                     
                             
