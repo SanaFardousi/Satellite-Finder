@@ -7,6 +7,7 @@ import folium
 import pandas as pd
 import plotly.express as px
 
+
 g = geocoder.ip('me')
 lat = g.latlng[0]
 lng = g.latlng[1]
@@ -14,7 +15,6 @@ lng = g.latlng[1]
 
 st.title("Satellites in Sight: Track What's Above 🛰️")
 st.subheader("Discover the Satellites Orbiting Your Location", divider = 'blue')
-#st.divider()
 
 with st.form("main form",clear_on_submit=False, border=False):
     col1, col2 = st.columns(2)
@@ -27,39 +27,28 @@ with st.form("main form",clear_on_submit=False, border=False):
 
     with col2:
         with st.expander("Or choose location manually 📍"):
-            #with st.form("my_form", clear_on_submit=False, border=False):
 
-            latitude = st.number_input("Enter Latitude", value=lat, placeholder="Type a number...", key=1, format="%f")
-            longitude = st.number_input("Enter Longitude", value=lng, placeholder="Type a number...", key=2, format="%f")
+            #latitude = st.number_input("Enter Latitude", value=lat, placeholder="Type a number...", key=1, format="%f")
+            #longitude = st.number_input("Enter Longitude", value=lng, placeholder="Type a number...", key=2, format="%f")
 
-            #setLocation = st.form_submit_button("Set Location")
-
-            #if setLocation:
             cities = pd.read_csv('worldcities.csv')
             city = st.selectbox("Choose Your City", cities, index = None, placeholder='Choose Your City..')
-            # st.write(chooseCity.lat)
-            # st.write(chooseCity.lng)
-            # print(type(chooseCity))
+    
             if city:
                 # Filter the DataFrame for the selected city
                 city_data = cities[cities['city'] == city].iloc[0]
-                latitude = city_data['lat']
-                longitude = city_data['lng']
+                lat = city_data['lat']
+                lng = city_data['lng']
     
                 # Display the results
                 st.write(f"Selected City: {city}")
-                st.write(f"Latitude: {latitude}, Longitude: {longitude}")
+                st.write(f"Latitude: {lat}, Longitude: {lng}")
 
-            lat = latitude
-            lng = longitude
         
     st.success(f"Stored Location: {lat}, {lng}")
-    
-    #col3, col4 = st.columns([0.7,0.3])
 
-    #with col3:
     degree = st.slider("Select the radius of the search? ", 0, 90, 45, help='0 shows the satellites orbiting right above you, 90 shows all satellite above the horizen.')
-    #with col4:
+
     #st.image('degree.png',caption='The radius (θ), expressed in degrees, is measured relative to the point in the sky directly above an observer (azimuth). The search radius range is 0 to 90 degrees, nearly 0 meaning to show only satellites passing exactly above the observer location, while 90 degrees to return all satellites above the horizon.', width=300)
 
     categories = {
@@ -160,6 +149,10 @@ with st.form("main form",clear_on_submit=False, border=False):
         print(type(text))
 
         data = json.loads(text)
+        if data == None:
+            st.error('Error: No satellites were detected')
+            st.stop()
+        
         satellites = data['above']
         df = pd.DataFrame(satellites)
         df.rename(columns={'satlat':'lat', 'satlng':'lon'}, inplace=True)
@@ -167,13 +160,33 @@ with st.form("main form",clear_on_submit=False, border=False):
         tab1, tab2 = st.tabs(['Map', 'Table'])
 
         with tab1:
-            map = px.scatter_mapbox(df, lat = 'lat', lon = 'lon', color = 'satname', hover_name = 'satname', hover_data = ['intDesignator', 'launchDate', 'satalt', 'satid'], color_discrete_sequence=px.colors.qualitative.Set1, zoom = 3, mapbox_style = 'open-street-map', height = 600)
+            def classify_decade(launchDate):
+                year = int(launchDate.split('-')[0])
+                if 1950 <= year < 1960:
+                    return '1950s'
+                elif 1960 <= year < 1970:
+                    return '1960s'
+                elif 1970 <= year < 1980:
+                    return '1970s'
+                elif 1980 <= year < 1990:
+                    return '1980s'
+                elif 1990 <= year < 2000:
+                    return '1990s'
+                elif 2000 <= year < 2010:
+                    return '2000s'
+                elif 2010 <= year < 2020:
+                    return '2010s'
+                else:
+                    return '2020s'
+                
+            df['decade'] = df['launchDate'].apply(classify_decade)
+            map = px.scatter_mapbox(df, lat = 'lat', lon = 'lon', color = 'decade', hover_name = 'satname', hover_data = ['intDesignator', 'launchDate', 'satalt', 'satid'], color_discrete_sequence=px.colors.qualitative.Set1, zoom = 3, mapbox_style = 'open-street-map', height = 600)
             st.plotly_chart(map)
 
         with tab2:
             st.write(df)
 
-#st.write('Rate us!')
-#fb = st.feedback('stars')
+st.write('Rate us!')
+fb = st.feedback('stars')
                                     
                             
