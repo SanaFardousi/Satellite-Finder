@@ -1,9 +1,6 @@
 import streamlit as st
 import requests
 import json
-import geocoder
-from streamlit_folium import st_folium
-import folium
 import pandas as pd
 import plotly.express as px
 from streamlit_js_eval import streamlit_js_eval, get_geolocation
