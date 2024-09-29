@@ -16,16 +16,19 @@ from streamlit_js_eval import streamlit_js_eval, get_geolocation
 st.title("Satellites in Sight: Track What's Above 🛰️")
 st.subheader("Discover the Satellites Orbiting Your Location", divider = 'blue')
 
-#if st.checkbox("Check my location"):
 loc = get_geolocation()
-if loc == None:
-    st.error('Error: oops')
-    st.stop()
-lat = loc['coords']['latitude']
-lng = loc['coords']['longitude']
-# else:
-#     lat = 0
-#     lng = 0
+
+lat = 0
+lng = 0
+
+
+try:
+    lat = loc['coords']['latitude']
+    lng = loc['coords']['longitude']
+    print(f"Latitude: {lat}, Longitude: {lng}")
+except (TypeError, KeyError) as e:
+    print(f"Error accessing data: {e}")
+
 
 with st.form("main form",clear_on_submit=False, border=False):
     col1, col2 = st.columns(2)
