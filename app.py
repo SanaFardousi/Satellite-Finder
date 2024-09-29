@@ -186,7 +186,7 @@ with st.form("main form",clear_on_submit=False, border=False):
         with tab2:
             st.write(df)
 
-st.write('Rate us!')
-fb = st.feedback('stars')
+# st.write('Rate us!')
+# fb = st.feedback('stars')
                                     
                             
