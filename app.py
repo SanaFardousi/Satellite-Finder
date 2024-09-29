@@ -6,15 +6,26 @@ from streamlit_folium import st_folium
 import folium
 import pandas as pd
 import plotly.express as px
+from streamlit_js_eval import streamlit_js_eval, get_geolocation
 
-
-g = geocoder.ip('me')
-lat = g.latlng[0]
-lng = g.latlng[1]
+# g = geocoder.ip('me')
+# lat = g.latlng[0]
+# lng = g.latlng[1]
 
 
 st.title("Satellites in Sight: Track What's Above 🛰️")
 st.subheader("Discover the Satellites Orbiting Your Location", divider = 'blue')
+
+#if st.checkbox("Check my location"):
+loc = get_geolocation()
+if loc == None:
+    st.error('Error: oops')
+    st.stop()
+lat = loc['coords']['latitude']
+lng = loc['coords']['longitude']
+# else:
+#     lat = 0
+#     lng = 0
 
 with st.form("main form",clear_on_submit=False, border=False):
     col1, col2 = st.columns(2)
