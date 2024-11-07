@@ -3,12 +3,18 @@ import requests
 import json
 import pandas as pd
 import plotly.express as px
-from streamlit_js_eval import streamlit_js_eval, get_geolocation
+from streamlit_js_eval import get_geolocation
+from streamlit_lottie import st_lottie 
 
-# g = geocoder.ip('me')
-# lat = g.latlng[0]
-# lng = g.latlng[1]
-
+with st.sidebar:
+    st_lottie('https://lottie.host/cbe61e44-1322-4801-85a8-df19abfa38ed/zQLlG2qOMD.json')
+    st.subheader('How It Works')
+    st.markdown('The "Satellites in Sight" web app offers an fun way to track satellites orbiting overhead in real-time! It utilizes the [N2YO REST API](https://www.n2yo.com/api/#above) to gather satellite information based on your specified location and viewing angle. You can also filter by satellite categories, such as Starlink or weather satellites. The data is presented on an interactive map and table, which you can download as a CSV file.')
+    st.image('degree.png')
+    st.markdown('\"The radius (θ), expressed in degrees, is measured relative to the point in the sky directly above an observer (azimuth). The search radius range is 0 to 90 degrees, nearly 0 meaning to show only satellites passing exactly above the observer location, while 90 degrees to return all satellites above the horizon.\"  — N2YO API Documentation')
+    st.markdown('### Resources:')
+    st.markdown('[N2YO API Documentation](https://www.n2yo.com/api/#above)')
+    
 
 st.title("Satellites in Sight: Track What's Above 🛰️")
 st.subheader("Discover the Satellites Orbiting Your Location", divider = 'blue')
@@ -39,9 +45,6 @@ with st.form("main form",clear_on_submit=False, border=False):
     with col2:
         with st.expander("Or choose location manually 📍"):
 
-            #latitude = st.number_input("Enter Latitude", value=lat, placeholder="Type a number...", key=1, format="%f")
-            #longitude = st.number_input("Enter Longitude", value=lng, placeholder="Type a number...", key=2, format="%f")
-
             cities = pd.read_csv('worldcities.csv')
             city = st.selectbox("Choose Your City", cities, index = None, placeholder='Choose Your City..')
     
@@ -60,7 +63,7 @@ with st.form("main form",clear_on_submit=False, border=False):
 
     degree = st.slider("Select the radius of the search? ", 0, 90, 45, help='0 shows the satellites orbiting right above you, 90 shows all satellite above the horizen.')
 
-    #st.image('degree.png',caption='The radius (θ), expressed in degrees, is measured relative to the point in the sky directly above an observer (azimuth). The search radius range is 0 to 90 degrees, nearly 0 meaning to show only satellites passing exactly above the observer location, while 90 degrees to return all satellites above the horizon.', width=300)
+    
 
     categories = {
         'All': 0,
@@ -119,10 +122,6 @@ with st.form("main form",clear_on_submit=False, border=False):
         'OneWeb': 53,
         'Chinese Space Station': 54
     }
-    # options = st.multiselect(
-    # "Choose Satellite Categories", reversed_catg)
-
-    # st.write("You selected:", options)
 
     categoryName = st.selectbox(
     "Choose Satellite Category", categories
@@ -146,22 +145,13 @@ with st.form("main form",clear_on_submit=False, border=False):
         middleOfURL = "/" + str(lat) + "/" + str(lng) + "/" + str(elevation) + "/" + str(degree) + "/" + str(category) + "/"
         endOfURL = "&apiKey=" + st.secrets["key"]   
         finalURL = beginingOfURL + middleOfURL + endOfURL
-        print(finalURL) 
         response = requests.get(finalURL)
 
-        def jprint(obj): #takes json object and converts into formatted string to print 
-            text = json.dumps(obj, sort_keys=True, indent=4)
-            print(text)
-
-
-        jprint(response1)
-        jprint(response.json())
         text = json.dumps(response.json(), sort_keys=True, indent=4)
-        print(type(text))
 
         data = json.loads(text)
         if data == None:
-            st.error('Error: No satellites were detected')
+            st.warning('No satellites were detected, try increasing the search degree or choose a different category')
             st.stop()
         
         satellites = data['above']
@@ -190,14 +180,11 @@ with st.form("main form",clear_on_submit=False, border=False):
                 else:
                     return '2020s'
                 
-            df['decade'] = df['launchDate'].apply(classify_decade)
-            map = px.scatter_mapbox(df, lat = 'lat', lon = 'lon', color = 'decade', hover_name = 'satname', hover_data = ['intDesignator', 'launchDate', 'satalt', 'satid'], color_discrete_sequence=px.colors.qualitative.Set1, zoom = 3, mapbox_style = 'open-street-map', height = 600)
+            df['Launch Decade'] = df['launchDate'].apply(classify_decade)
+            map = px.scatter_mapbox(df, lat = 'lat', lon = 'lon', color = 'Launch Decade', hover_name = 'satname', hover_data = ['intDesignator', 'launchDate', 'satalt', 'satid'], color_discrete_sequence=px.colors.qualitative.Set1, zoom = 3, mapbox_style = 'open-street-map', height = 600)
             st.plotly_chart(map)
 
         with tab2:
             st.write(df)
-
-# st.write('Rate us!')
-# fb = st.feedback('stars')
                                     
                             
