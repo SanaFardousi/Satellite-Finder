@@ -143,7 +143,7 @@ with st.form("main form",clear_on_submit=False, border=False):
         ## Getting satellites information
         beginingOfURL = "https://api.n2yo.com/rest/v1/satellite//above/"
         middleOfURL = "/" + str(lat) + "/" + str(lng) + "/" + str(elevation) + "/" + str(degree) + "/" + str(category) + "/"
-        endOfURL = "&apiKey=" + st.secrets["key"]   
+        endOfURL = "&apiKey="+ st.secrets["key"]   
         finalURL = beginingOfURL + middleOfURL + endOfURL
         response = requests.get(finalURL)
 
