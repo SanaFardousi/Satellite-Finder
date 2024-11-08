@@ -2,6 +2,10 @@
 
 The **Satellites in Sight** web app allows you to track satellites in real time based on your current or selected location. This app uses the N2YO API to fetch satellite data, and presents it visually through an interactive map and detailed table. You can filter satellites by category (e.g., Starlink, GPS, Weather) and adjust the search radius to explore the sky above you.
 
+<a href="https://satellites-in-sight.streamlit.app/" target="_blank">
+    <button>View the app</button>
+</a>
+
 ## Features
 
 - **Real-time satellite tracking**: See which satellites are passing over your location.
