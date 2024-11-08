@@ -1,21 +1,28 @@
-<div align="center">
-      <h1> <img src="https://lottiefiles.com/free-animation/satellite-around-earth-uuLZjgQUqE" width="80px"><br/>Satellites in Sight</h1>
-     </div>
+# Satellites in Sight: Real-Time Satellite Tracker 🌍🛰️
 
+The **Satellites in Sight** web app allows you to track satellites in real time based on your current or selected location. This app uses the N2YO API to fetch satellite data, and presents it visually through an interactive map and detailed table. You can filter satellites by category (e.g., Starlink, GPS, Weather) and adjust the search radius to explore the sky above you.
 
-# Description
-Satellites in Sight: Track What's Above 🛰️
+## Features
 
-# Features
--Real-time Satellite Tracking: Track satellites orbiting overhead in real-time.
--Location-based Data: Uses your specified location and viewing angle to show relevant satellite information.
--Satellite Category Filters: Filter satellites by category, such as Starlink, weather satellites, and more.
--Interactive Map & Table: View satellite data on an interactive map and detailed table.
--CSV Export: Download satellite data as a CSV file for further analysis
+- **Real-time satellite tracking**: See which satellites are passing over your location.
+- **Interactive map**: Visualize satellite positions on an interactive map using Plotly.
+- **Satellite categorization**: Filter satellites by category, including Starlink, GPS, NOAA, and more.
+- **Search radius control**: Set the search radius from 0° (directly above) to 90° (full sky).
+- **Downloadable satellite data**: Export the satellite data in a CSV format for further analysis.
 
-# Tech Used
- ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Plotly](https://img.shields.io/badge/Plotly-%233F4F75.svg?style=for-the-badge&logo=plotly&logoColor=white)
-      
+## How It Works
 
-<!-- </> with 💛 by readMD (https://readmd.itsvg.in) -->
-    
+1. **Location-based tracking**: The app first fetches your current geolocation. Alternatively, you can choose a city manually from a list of worldwide cities.
+2. **Search parameters**: You can adjust the search radius (0° to 90°) and select the satellite category you want to explore.
+3. **Satellite data**: Based on the inputs, the app queries the N2YO API to fetch real-time satellite information.
+4. **Visualization**: Satellites are shown on a map, color-coded by their launch decade for better understanding.
+5. **Table of satellite information**: A detailed table showing information like satellite name, launch date, altitude, and satellite ID.
+
+## Resources
+
+- [N2YO API Documentation](https://www.n2yo.com/api/#above): This is the source for the satellite data used in the app.
+- [Open Elevation API](https://open-elevation.com/): Used to fetch the elevation of the given coordinates for accurate satellite data retrieval.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
