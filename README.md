@@ -11,13 +11,13 @@ The **Satellites in Sight** web app allows you to track satellites in real time 
 - **Downloadable satellite data**: Export the satellite data in a CSV format for further analysis.
 
 ## Screenshots
-![Alt text](screenshots\s1.png)
+![](screenshots/s1.png)
 
-![Alt text](screenshots\s2.png)
+![](screenshots/s2.png)
 
-![Alt text](screenshots\s3.png)
+![](screenshots/s3.png)
 
-![Alt text](screenshots\s4.png)
+![](screenshots/s4.png)
 
 ## How It Works
 
