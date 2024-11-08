@@ -14,6 +14,7 @@ with st.sidebar:
     st.markdown('\"The radius (θ), expressed in degrees, is measured relative to the point in the sky directly above an observer (azimuth). The search radius range is 0 to 90 degrees, nearly 0 meaning to show only satellites passing exactly above the observer location, while 90 degrees to return all satellites above the horizon.\"  — N2YO API Documentation')
     st.markdown('### Resources:')
     st.markdown('[N2YO API Documentation](https://www.n2yo.com/api/#above)')
+    st.markdown('[Open Elevation API](https://open-elevation.com/)')
     
 
 st.title("Satellites in Sight: Track What's Above 🛰️")
