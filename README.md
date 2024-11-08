@@ -10,6 +10,15 @@ The **Satellites in Sight** web app allows you to track satellites in real time 
 - **Search radius control**: Set the search radius from 0° (directly above) to 90° (full sky).
 - **Downloadable satellite data**: Export the satellite data in a CSV format for further analysis.
 
+## Screenshots
+![Alt text](screenshots/s1.jpg)
+
+![Alt text](screenshots/s2.jpg)
+
+![Alt text](screenshots/s3.jpg)
+
+![Alt text](screenshots/s4.jpg)
+
 ## How It Works
 
 1. **Location-based tracking**: The app first fetches your current geolocation. Alternatively, you can choose a city manually from a list of worldwide cities.
